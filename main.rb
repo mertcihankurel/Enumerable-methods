@@ -112,6 +112,22 @@ module Enumerable
     true
   end
 
+  def my_count(arg = nil)
+    input_array = to_a
+    count = 0
+​
+    if arg != nil
+      warn "warning: given block not used" if block_given?
+      input_array.my_each { |element| count += 1 if element == arg }
+    elsif !block_given?
+      input_array.my_each { |element| count += 1 }
+    else
+      input_array.my_each { |element| count += 1 if yield(element) }
+    end
+​
+    count
+  end
+
 end
 
 test_hash = {
@@ -121,6 +137,6 @@ test_hash = {
   "i": 2,
 }
 
-p [1, 2, 5, 67].my_any?(Float)
+p [1, 1, 5, "67.1"].count(1)
 
 # p [1, 2, 4, 6, 5].my_each_with_index
