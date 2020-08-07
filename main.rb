@@ -35,21 +35,57 @@ module Enumerable
     array = to_a
     if arg.nil? && !block_given?
       array.my_each { |element| return false if element.nil? || element == false}
-    #^no block and not argument
     return true
+
     elsif !arg.nil?
       warn "warning: given block not used" if block_given?
-      array.my_each { |element| return false if element != arg }
-      return true
+
+      if arg.is_a(Regexp)
+        array.my_each { |element| return false if !element.is_a?(String) || !element.match(arg) }
+        return true
+      elsif arg.is_a?(Class)
+        input_array.my_each { |element| return false if !element.is_a?(arg) }
+        return true
+      else
+        input_array.my_each { |element| return false if element != arg }
+        return true
+      end
+    
     else
       array.my_each { |element| return false unless yield(element) } 
       return true
     end
-    
-
+    true
   end
 
-  
+  def my_any?(arg = nil)
+    array = to_a
+    if arg.nil? && !block_given?
+      array.my_each { |element| return true if element != nil && element != false}
+    return false
+
+    elsif !arg.nil?
+      warn "warning: given block not used" if block_given?
+
+      if arg.is_a?(Regexp)
+        array.my_each { |element| return true if element.is_a?(String) && element.match(arg) }
+        return false
+      elsif arg.is_a?(Class)
+        array.my_each { |element| return true if element.is_a?(arg) }
+        return false
+      else
+        array.my_each { |element| return true if element == arg }
+        return false
+      end
+    
+    else
+      array.my_each { |element| return true if yield(element) } 
+      return false
+    end
+    false
+  end
+
+
 end
 
 test_hash = {
@@ -59,5 +95,6 @@ test_hash = {
   "i": 2,
 }
 
-p ["g", "g", "y"].all?(/g/)
+p [1, 2, 5, 67].my_any?(Float)
+
 # p [1, 2, 4, 6, 5].my_each_with_index
