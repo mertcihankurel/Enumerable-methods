@@ -85,6 +85,32 @@ module Enumerable
     false
   end
 
+  def my_none?(arg = nil)
+    input_array = to_a
+​
+    if arg != nil
+      warn "warning: given block not used" if block_given?
+
+      if arg.is_a?(Regexp)
+        input_array.my_each { |element| return false if element.is_a?(String) && element.match(arg) }
+        return true
+      elsif arg.is_a?(Class)
+        input_array.my_each { |element| return false if element.is_a?(arg) }
+        return true
+      else
+        input_array.my_each { |element| return false if element == arg }
+        return true
+      end
+​
+    elsif !block_given?
+      input_array.my_each { |element| return false if element != nil && element != false }
+      return true 
+    else
+      input_array.my_each { |element| return false if yield(element) }
+    end
+​
+    true
+  end
 
 end
 
