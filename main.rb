@@ -138,6 +138,51 @@ module Enumerable
     output_array
   end
 
+  def my_inject(*arg)
+    array = to_a
+    raise ArgumentError.new "wrong number of arguments (given #{arg.length}, expected 0..2)" if arg.length > 2
+    raise LocalJumpError.new "no block given" if arg.length == 0 && !block_given?
+
+    if arg.length == 2
+      raise TypeError.new "#{arg.last} is not a symbol nor a string" if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
+    
+      result = arg.first
+      method = arg.last
+
+      array.my_each { |next_element| result = result.send(method, next_element)}
+
+      return result
+    elsif arg.length == 1 && !block_given?
+      raise TypeError.new "#{arg.first} is not a symbol nor a string" if !arg.first.is_a?(Symbol) && !arg.first.is_a?(String)
+      result = array.first
+      method = arg.first
+      array.my_each_with_index do |next_element, index|
+        next if index == 0
+        result = result.send(method, next_element)
+      end
+
+      return result
+    elsif arg.length == 1 && block_given?
+      result = arg.first
+      array.my_each { |next_element| result = yield(result, next_element) }
+      return result
+    else
+      result = array.first
+
+      array.my_each_with_index do |next_element, index|
+        next if index == 0
+        result = yield(result, next_element)
+      end
+
+      result
+    end
+  end
+end
+
+def multiply_els(array)
+  raise ArgumentError.new "Only arrays with Numeric elements accepted" unless array.my_all?(Numeric)
+
+  array.my_inject(:*)
 end
 
 test_hash = {
@@ -146,7 +191,3 @@ test_hash = {
   "z": 3,
   "i": 2,
 }
-
-p [1, 1, 5, 4].my_map { |element| element * 6 }
-
-# p [1, 2, 4, 6, 5].my_each_with_index
