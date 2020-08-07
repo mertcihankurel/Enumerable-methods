@@ -1,5 +1,4 @@
 module Enumerable
-  
   def my_each
     return to_enum unless block_given?
 
@@ -32,7 +31,7 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-    
+
     array = to_a
     if arg.nil? && !block_given?
       array.my_each { |element| return false if element.nil? || element == false}
@@ -131,10 +130,11 @@ module Enumerable
 
   def my_map(&change_proc)
     return to_enum(:map) unless block_given?
+    
     input_array = to_a
     output_array = []
 
-    input_array.my_each { |element| output_array << yield(element) } 
+    input_array.my_each { |element| output_array << yield(element) }
 
     output_array
   end
@@ -146,7 +146,7 @@ module Enumerable
 
     if arg.length == 2
       raise TypeError.new "#{arg.last} is not a symbol nor a string"
-       if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
+    if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
       result = arg.first
       method = arg.last
 
@@ -154,11 +154,14 @@ module Enumerable
 
       return result
     elsif arg.length == 1 && !block_given?
-      raise TypeError.new "#{arg.first} is not a symbol nor a string" if !arg.first.is_a?(Symbol) && !arg.first.is_a?(String)
+      raise TypeError.new "#{arg.first} is not a symbol nor a string" 
+      if !arg.first.is_a?(Symbol) && !arg.first.is_a?(String)
+
       result = array.first
       method = arg.first
       array.my_each_with_index do |next_element, index|
-        next if index == 0
+        next if index.zero?
+
         result = result.send(method, next_element)
       end
 
@@ -167,22 +170,24 @@ module Enumerable
       result = arg.first
       array.my_each { |next_element| result = yield(result, next_element) }
       return result
-    else
+            else
       result = array.first
 
       array.my_each_with_index do |next_element, index|
-        next if index == 0
+        next if index.zero?
+
         result = yield(result, next_element)
       end
 
       result
+        end
+      end
     end
-  end
-end
 
   def multiply_els(array)
-  raise ArgumentError.new 'Only arrays with Numeric elements accepted' unless array.my_all?(Numeric)
+    raise ArgumentError.new 'Only arrays with Numeric elements accepted' unless array.my_all?(Numeric)
 
   array.my_inject(:*)
+  end
 end
 end
