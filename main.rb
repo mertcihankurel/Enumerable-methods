@@ -30,6 +30,25 @@ module Enumerable
     end
     output_array
   end
+
+  def my_all?(arg = nil)
+    array = to_a
+    if arg.nil? && !block_given?
+      array.my_each { |element| return false if element.nil? || element == false}
+    #^no block and not argument
+    return true
+    elsif !arg.nil?
+      warn "warning: given block not used" if block_given?
+      array.my_each { |element| return false if element != arg }
+      return true
+    else
+      array.my_each { |element| return false unless yield(element) } 
+      return true
+    end
+    
+
+  end
+
   
 end
 
@@ -40,5 +59,5 @@ test_hash = {
   "i": 2,
 }
 
-p test_hash.my_select { |symbol, value| symbol == :Y }
+p ["g", "g", "y"].all?(/g/)
 # p [1, 2, 4, 6, 5].my_each_with_index
