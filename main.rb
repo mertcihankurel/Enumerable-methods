@@ -8,10 +8,10 @@ module Enumerable
 
     self
   end
-  
+
   def my_each_with_index
     return to_enum unless block_given?
-    
+
     array = to_a
     array.size.times { |index| yield(array[index], index) }
 
@@ -32,6 +32,7 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
+    
     array = to_a
     if arg.nil? && !block_given?
       array.my_each { |element| return false if element.nil? || element == false}
@@ -50,9 +51,9 @@ module Enumerable
         input_array.my_each { |element| return false if element != arg }
         return true
       end
-    
+
     else
-      array.my_each { |element| return false unless yield(element) } 
+      array.my_each { |element| return false unless yield(element) }
       return true
     end
     true
@@ -77,9 +78,9 @@ module Enumerable
         array.my_each { |element| return true if element == arg }
         return false
       end
-    
+
     else
-      array.my_each { |element| return true if yield(element) } 
+      array.my_each { |element| return true if yield(element) }
       return false
     end
     false
@@ -104,7 +105,7 @@ module Enumerable
 ​
     elsif !block_given?
       input_array.my_each { |element| return false if element != nil && element != false }
-      return true 
+      return true
     else
       input_array.my_each { |element| return false if yield(element) }
     end
@@ -144,8 +145,8 @@ module Enumerable
     raise LocalJumpError.new "no block given" if arg.length == 0 && !block_given?
 
     if arg.length == 2
-      raise TypeError.new "#{arg.last} is not a symbol nor a string" if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
-    
+      raise TypeError.new "#{arg.last} is not a symbol nor a string"
+       if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
       result = arg.first
       method = arg.last
 
@@ -179,15 +180,9 @@ module Enumerable
   end
 end
 
-def multiply_els(array)
-  raise ArgumentError.new "Only arrays with Numeric elements accepted" unless array.my_all?(Numeric)
+  def multiply_els(array)
+  raise ArgumentError.new 'Only arrays with Numeric elements accepted' unless array.my_all?(Numeric)
 
   array.my_inject(:*)
 end
-
-test_hash = {
-  "x": 1,
-  "Y": 2,
-  "z": 3,
-  "i": 2,
-}
+end
