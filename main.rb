@@ -128,6 +128,16 @@ module Enumerable
     count
   end
 
+  def my_map(&change_proc)
+    return to_enum(:map) unless block_given?
+    input_array = to_a
+    output_array = []
+
+    input_array.my_each { |element| output_array << yield(element) } 
+
+    output_array
+  end
+
 end
 
 test_hash = {
@@ -137,6 +147,6 @@ test_hash = {
   "i": 2,
 }
 
-p [1, 1, 5, "67.1"].count(1)
+p [1, 1, 5, 4].my_map { |element| element * 6 }
 
 # p [1, 2, 4, 6, 5].my_each_with_index
