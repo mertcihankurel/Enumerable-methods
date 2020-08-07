@@ -3,7 +3,7 @@
 > For this project, we created two **enumerable methods** used by the Enumerable module in Ruby. 
 
 ## Short demo of the code
-![screenshot](.github/app_screenshot.png)
+![screenshot](.github/app-screenshot.png)
 
 > We created the most used Enumerable methods with an extensive use of the Ruby methods, data types, loops and conditionals.
 
