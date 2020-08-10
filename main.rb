@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
+# Personalized methods for the Enumerable module
 module Enumerable
-  
   def my_each
     return to_enum unless block_given?
 
@@ -8,10 +10,10 @@ module Enumerable
 
     self
   end
-  
+
   def my_each_with_index
     return to_enum unless block_given?
-    
+
     array = to_a
     array.size.times { |index| yield(array[index], index) }
 
@@ -25,169 +27,110 @@ module Enumerable
     output_array = []
 
     array.my_each { |element| output_array << element if yield(element) }
-    if self.class == Hash
-      output_array = Hash[output_array.map { |key, value| [key, value] }]
-    end
+
+    output_array = Hash[output_array.map { |key, value| [key, value] }] if self.class == Hash
+
     output_array
   end
 
   def my_all?(arg = nil)
     array = to_a
-    if arg.nil? && !block_given?
-      array.my_each { |element| return false if element.nil? || element == false}
-    return true
+    if arg.nil?
+      array.my_each { |element| return false unless element } unless block_given?
+      array.my_each { |element| return false unless yield(element) } if block_given?
 
     elsif !arg.nil?
-      warn "warning: given block not used" if block_given?
+      array.my_each { |element| return false if !element.is_a?(String) || !element.match(arg) } if arg.is_a?(Regexp)
 
-      if arg.is_a(Regexp)
-        array.my_each { |element| return false if !element.is_a?(String) || !element.match(arg) }
-        return true
-      elsif arg.is_a?(Class)
-        input_array.my_each { |element| return false if !element.is_a?(arg) }
-        return true
-      else
-        input_array.my_each { |element| return false if element != arg }
-        return true
-      end
-    
-    else
-      array.my_each { |element| return false unless yield(element) } 
-      return true
+      array.my_each { |element| return false unless element.is_a?(arg) } if arg.is_a?(Class)
+
+      array.my_each { |element| return false if element != arg } unless arg.is_a?(Class) || arg.is_a?(Regexp)
     end
     true
   end
 
   def my_any?(arg = nil)
     array = to_a
-    if arg.nil? && !block_given?
-      array.my_each { |element| return true if element != nil && element != false}
-    return false
-
+    if arg.nil?
+      array.my_each { |element| return true if element } unless block_given?
+      array.my_each { |element| return true if yield(element) } if block_given?
     elsif !arg.nil?
-      warn "warning: given block not used" if block_given?
-
-      if arg.is_a?(Regexp)
-        array.my_each { |element| return true if element.is_a?(String) && element.match(arg) }
-        return false
-      elsif arg.is_a?(Class)
-        array.my_each { |element| return true if element.is_a?(arg) }
-        return false
-      else
-        array.my_each { |element| return true if element == arg }
-        return false
-      end
-    
-    else
-      array.my_each { |element| return true if yield(element) } 
-      return false
+      array.my_each { |element| return true if element.is_a?(String) && element.match(arg) } if arg.is_a?(Regexp)
+      array.my_each { |element| return true if element.is_a?(arg) } if arg.is_a?(Class)
+      array.my_each { |element| return true if element == arg } unless arg.is_a?(Class) && arg.is_a?(Regexp)
     end
     false
   end
 
   def my_none?(arg = nil)
-    input_array = to_a
-​
-    if arg != nil
-      warn "warning: given block not used" if block_given?
-
-      if arg.is_a?(Regexp)
-        input_array.my_each { |element| return false if element.is_a?(String) && element.match(arg) }
-        return true
-      elsif arg.is_a?(Class)
-        input_array.my_each { |element| return false if element.is_a?(arg) }
-        return true
-      else
-        input_array.my_each { |element| return false if element == arg }
-        return true
-      end
-​
-    elsif !block_given?
-      input_array.my_each { |element| return false if element != nil && element != false }
-      return true 
-    else
-      input_array.my_each { |element| return false if yield(element) }
+    array = to_a
+    if arg.nil?
+      array.my_each { |element| return false if element } unless block_given?
+      array.my_each { |element| return false if yield(element) } if block_given?
+    elsif !arg.nil?
+      array.my_each { |element| return false if element.is_a?(String) && element.match(arg) } if arg.is_a?(Regexp)
+      array.my_each { |element| return false if element.is_a?(arg) } if arg.is_a?(Class)
+      array.my_each { |element| return false if element == arg } unless arg.is_a?(Class) && arg.is_a?(Regexp)
     end
-​
     true
   end
 
   def my_count(arg = nil)
-    input_array = to_a
+    array = to_a
     count = 0
-​
-    if arg != nil
-      warn "warning: given block not used" if block_given?
-      input_array.my_each { |element| count += 1 if element == arg }
-    elsif !block_given?
-      input_array.my_each { |element| count += 1 }
+
+    if arg.nil?
+      block_given? ? array.my_each { |element| count += 1 if yield(element) } : array.my_each { count += 1 }
     else
-      input_array.my_each { |element| count += 1 if yield(element) }
+      array.my_each { |element| count += 1 if element == arg }
     end
-​
+
     count
   end
 
-  def my_map(&change_proc)
+  def my_map(&_change_proc)
     return to_enum(:map) unless block_given?
-    input_array = to_a
+
+    array = to_a
     output_array = []
 
-    input_array.my_each { |element| output_array << yield(element) } 
+    array.my_each { |element| output_array << yield(element) }
 
     output_array
   end
 
   def my_inject(*arg)
     array = to_a
-    raise ArgumentError.new "wrong number of arguments (given #{arg.length}, expected 0..2)" if arg.length > 2
-    raise LocalJumpError.new "no block given" if arg.length == 0 && !block_given?
+    arg1 = arg[0]
+    arg2 = arg[1]
 
-    if arg.length == 2
-      raise TypeError.new "#{arg.last} is not a symbol nor a string" if !arg.last.is_a?(Symbol) || !arg.last.is_a?(String)
-    
-      result = arg.first
-      method = arg.last
+    both_args = arg1 && arg2
+    only_one_arg = arg1 && !arg2
+    no_arg = !arg1
 
-      array.my_each { |next_element| result = result.send(method, next_element)}
+    result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
 
-      return result
-    elsif arg.length == 1 && !block_given?
-      raise TypeError.new "#{arg.first} is not a symbol nor a string" if !arg.first.is_a?(Symbol) && !arg.first.is_a?(String)
-      result = array.first
-      method = arg.first
-      array.my_each_with_index do |next_element, index|
-        next if index == 0
-        result = result.send(method, next_element)
-      end
-
-      return result
-    elsif arg.length == 1 && block_given?
-      result = arg.first
-      array.my_each { |next_element| result = yield(result, next_element) }
-      return result
+    if block_given?
+      array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
+      array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
     else
-      result = array.first
+      array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
-      array.my_each_with_index do |next_element, index|
-        next if index == 0
-        result = yield(result, next_element)
-      end
+      array.drop(1).my_each { |next_element| result = result.send(arg2, next_element) } if both_args
 
-      result
     end
+    result
   end
 end
 
 def multiply_els(array)
-  raise ArgumentError.new "Only arrays with Numeric elements accepted" unless array.my_all?(Numeric)
+  raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
 
   array.my_inject(:*)
 end
 
-test_hash = {
-  "x": 1,
-  "Y": 2,
-  "z": 3,
-  "i": 2,
-}
+p [1, 5, 7, 8, 9].my_inject(2, :*) #=> true
+# p [2, 1, 6, 7, 4, 8, 10].my_none?(15) #=> true
+# p %w[Marc Luc Jean].my_none?('Jean')
+# p [1, 3.14, 42].my_none?(Float)
+# p [1, 5i, 5.67].my_none?(Numeric)
