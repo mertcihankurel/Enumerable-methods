@@ -145,8 +145,8 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-p %w[Marc Luc Jean].my_all? { |text| text.size >= 3 } # => true
-p %w[Marc Luc Jean].my_all? { |text| text.size >= 4 } # => false
+p(%w[Marc Luc Jean].my_all? { |text| text.size >= 3 }) # => true
+p(%w[Marc Luc Jean].my_all? { |text| text.size >= 4 }) # => false
 p [2, 1, 6, 7, 4, 8, 10].my_all?(3) # => false
 p %w[Marc Luc Jean].my_all?('Jean') # => false
 p %w[Marc Luc Jean].my_all?(/a/) # => false
