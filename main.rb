@@ -102,13 +102,14 @@ module Enumerable
     count
   end
 
-  def my_map(&_change_proc)
+  def my_map(proc = nil)
     return to_enum(:map) unless block_given?
 
     array = to_a
     output_array = []
 
-    array.my_each { |element| output_array << yield(element) }
+    array.my_each { |element| output_array << proc.call(element) } if proc
+    array.my_each { |element| output_array << yield(element) } unless proc
 
     output_array
   end
@@ -122,6 +123,8 @@ module Enumerable
     only_one_arg = arg1 && !arg2
     no_arg = !arg1
 
+    raise LocalJumpError if !block_given? && no_arg
+
     result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
 
     if block_given?
@@ -132,7 +135,7 @@ module Enumerable
     else
       array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
-      array.drop(1).my_each { |next_element| result = result.send(arg2, next_element) } if both_args
+      array.my_each { |next_element| result = result.send(arg2, next_element) } if both_args
 
     end
     result
@@ -145,14 +148,8 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-p(%w[Marc Luc Jean].my_all? { |text| text.size >= 3 }) # => true
-p(%w[Marc Luc Jean].my_all? { |text| text.size >= 4 }) # => false
-p [2, 1, 6, 7, 4, 8, 10].my_all?(3) # => false
-p %w[Marc Luc Jean].my_all?('Jean') # => false
-p %w[Marc Luc Jean].my_all?(/a/) # => false
-p [1, 5i, 5.67].my_all?(Numeric) # => true
-p [2, 1, 6, 7, 4, 8, 10].my_all?(Integer) # => true
-p [nil, true, 99].my_all? # => false
-p [nil, false].my_all? # => false
-p [nil, nil, nil].my_all? # => false
-p [].my_all? # => true
+my_proc = proc { |num| num > 6 }
+p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
+
+p 5.times.my_inject(20, :*)
+p 5.times.inject(20, :*)
