@@ -34,6 +34,7 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
+
     array = to_a
     if arg.nil?
       array.my_each { |element| return false unless element } unless block_given?
@@ -127,6 +128,8 @@ def multiply_els(array)
   raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
 
   array.my_inject(:*)
+  end
+end
 end
 
 p [1, 5, 7, 8, 9].my_inject(2, :*) #=> true
