@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Personalized methods for the Enumerable module
 module Enumerable
   def my_each
@@ -34,10 +32,11 @@ module Enumerable
   end
 
   def my_all?(arg = nil)
-
     array = to_a
+
     if arg.nil?
       array.my_each { |element| return false unless element } unless block_given?
+
       array.my_each { |element| return false unless yield(element) } if block_given?
 
     elsif !arg.nil?
@@ -47,32 +46,46 @@ module Enumerable
 
       array.my_each { |element| return false if element != arg } unless arg.is_a?(Class) || arg.is_a?(Regexp)
     end
+
     true
   end
 
   def my_any?(arg = nil)
     array = to_a
+
     if arg.nil?
       array.my_each { |element| return true if element } unless block_given?
+
       array.my_each { |element| return true if yield(element) } if block_given?
+
     elsif !arg.nil?
+
       array.my_each { |element| return true if element.is_a?(String) && element.match(arg) } if arg.is_a?(Regexp)
+
       array.my_each { |element| return true if element.is_a?(arg) } if arg.is_a?(Class)
+
       array.my_each { |element| return true if element == arg } unless arg.is_a?(Class) && arg.is_a?(Regexp)
     end
+
     false
   end
 
   def my_none?(arg = nil)
     array = to_a
+
     if arg.nil?
       array.my_each { |element| return false if element } unless block_given?
+
       array.my_each { |element| return false if yield(element) } if block_given?
+
     elsif !arg.nil?
       array.my_each { |element| return false if element.is_a?(String) && element.match(arg) } if arg.is_a?(Regexp)
+
       array.my_each { |element| return false if element.is_a?(arg) } if arg.is_a?(Class)
+
       array.my_each { |element| return false if element == arg } unless arg.is_a?(Class) && arg.is_a?(Regexp)
     end
+
     true
   end
 
@@ -113,7 +126,9 @@ module Enumerable
 
     if block_given?
       array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
+
       array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
+
     else
       array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
@@ -128,12 +143,16 @@ def multiply_els(array)
   raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
 
   array.my_inject(:*)
-  end
-end
 end
 
-p [1, 5, 7, 8, 9].my_inject(2, :*) #=> true
-# p [2, 1, 6, 7, 4, 8, 10].my_none?(15) #=> true
-# p %w[Marc Luc Jean].my_none?('Jean')
-# p [1, 3.14, 42].my_none?(Float)
-# p [1, 5i, 5.67].my_none?(Numeric)
+p %w[Marc Luc Jean].my_all? { |text| text.size >= 3 } # => true
+p %w[Marc Luc Jean].my_all? { |text| text.size >= 4 } # => false
+p [2, 1, 6, 7, 4, 8, 10].my_all?(3) # => false
+p %w[Marc Luc Jean].my_all?('Jean') # => false
+p %w[Marc Luc Jean].my_all?(/a/) # => false
+p [1, 5i, 5.67].my_all?(Numeric) # => true
+p [2, 1, 6, 7, 4, 8, 10].my_all?(Integer) # => true
+p [nil, true, 99].my_all? # => false
+p [nil, false].my_all? # => false
+p [nil, nil, nil].my_all? # => false
+p [].my_all? # => true
