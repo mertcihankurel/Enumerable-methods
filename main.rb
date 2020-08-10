@@ -135,7 +135,7 @@ module Enumerable
     else
       array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
-      array.drop(1).my_each { |next_element| result = result.send(arg2, next_element) } if both_args
+      array.my_each { |next_element| result = result.send(arg2, next_element) } if both_args
 
     end
     result
@@ -151,7 +151,5 @@ end
 my_proc = proc { |num| num > 6 }
 p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
 
-p (1..5).my_inject(20, :*)
-p [1, 2, 3, 4, 5].my_inject(20, :*)
-p (1..5).inject(20, :*)
-p [1, 2, 3, 4, 5].inject(20, :*)
+p 5.times.my_inject(20, :*)
+p 5.times.inject(20, :*)
