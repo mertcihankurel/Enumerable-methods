@@ -1,74 +1,77 @@
-# Project Name
+# Enumerable methods
 
-> One paragraph statement about the project.
+> For this project, we created two **enumerable methods** used by the Enumerable module in Ruby. 
 
-![screenshot](./app_screenshot.png)
+## Short demo of the code
+![screenshot](.github/app-screenshot-2.png)
 
-Additional description about the project and its features.
+> We created the most used Enumerable methods with an extensive use of the Ruby methods, data types, loops and conditionals.
 
 ## Built With
-
-- Major languages,
-- frameworks,
-- technologies used
+- Ruby
+- VSCode
+- Rubocop
 
 ## Live Demo
 
-[Live Demo Link](https://livedemo.com)
-
+To quickly see our project in action, visit the [live demo](https://repl.it/@cristianCeamatu/Enumerable-methods#main.rb) on repl.it.
 
 ## Getting Started
 
-**This is an example of how you may give instructions on setting up your project locally.**
-**Modify this file to match your project, remove sections that don't apply. For example: delete the testing section if the currect project doesn't require testing.**
-
-
-To get a local copy up and running follow these simple example steps.
-
 ### Prerequisites
 
-### Setup
+To get this project up and running, you must already have ruby installed on your computer.
 
-### Install
+### Installation
 
-### Usage
+**To get this project set up on your local machine, follow these simple steps:**
 
-### Run tests
+1. Open Terminal.
 
-### Deployment
+2. Navigate to your desired location to download the contents of this repository.
 
+3. Copy and paste the following code into the Terminal:
 
+    git clone https://github.com/mcihadkurel/Enumerable-methods
+
+4. Hit enter.
+
+5. Once the repository has been cloned, navigate inside the repository and type:
+
+    ruby main.rb
+    
+    This will run the code, printing the output of our tests to the terminal. 
+
+6. To change those tests, simply open main.rb in a code editor and modify the values stored in the test_array and test_run variables.
+
+6. Enjoy sorted arrays of data for the rest of your life.
 
 ## Authors
 
-👤 **Author1**
+👤 **Cristian Viorel Ceamatu**
 
-- Github: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- Linkedin: [linkedin](https://linkedin.com/linkedinhandle)
+- Github: [@cristianCeamatu](https://github.com/cristianCeamatu)
+- Twitter: [@CeamatuV](https://twitter.com/CeamatuV)
+- Linkedin: [Ceamatu Cristian Viorel](https://www.linkedin.com/in/ceamatu-cristian-viorel-7a5469136/)
 
-👤 **Author2**
-
-- Github: [@githubhandle](https://github.com/githubhandle)
-- Twitter: [@twitterhandle](https://twitter.com/twitterhandle)
-- Linkedin: [linkedin](https://linkedin.com/linkedinhandle)
+👤**Muhammed Cihad Kurel**
+- Github: [@mcihadkurel](https://github.com/mcihadkurel)
+- Twitter: [@mece_ka](https://twitter.com/mece_ka)
+- LinkedIn: [@Muhammed Cihad Kurel](https://www.linkedin.com/in/muhammed-cihad-8187581a8/)
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!
-
-Feel free to check the [issues page](issues/).
+The best way you can contribute to this project is by submitting an [issue](https://github.com/cristianCeamatu/microverse-bubble-sort/issues) to help us improve it!
 
 ## Show your support
 
-Give a ⭐️ if you like this project!
+If you've read this far, you must like the project! Give us a ⭐️!
 
 ## Acknowledgments
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
+- This Project was part of an assignment available on The Odin Project.
+- Our thanks to Microverse and all our peers and colleagues there.
 
 ## 📝 License
 
-This project is [MIT](lic.url) licensed.
+This project has no license
