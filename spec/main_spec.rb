@@ -588,42 +588,109 @@ describe Enumerable do
   #   end
   # end
 
-  describe '#my_map' do
-    it 'returns an Enumerator if no block given' do
-      expect([1, 4, 6].my_map.class).to be Enumerator
+  # describe '#my_map' do
+  #   it 'returns an Enumerator if no block given' do
+  #     expect([1, 4, 6].my_map.class).to be Enumerator
+  #   end
+
+  #   context 'returns a NoMethodError when' do
+  #     it 'is called on a integer' do
+  #       expect { 5.my_map { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on a string' do
+  #       expect { 'XX'.my_map { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on nil' do
+  #       expect { nil.my_map { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on boolean' do
+  #       expect { true.my_map { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'the block cannot be applied to one of the containing elements' do
+  #       expect { ['xx', nil, false].my_map { |el| el / 2 } }.to raise_error(NoMethodError)
+  #     end
+  #   end
+
+  #   context 'returns a new object with the yielded block on each element:' do
+  #     let(:block) { proc { |element| element * 2 } }
+
+  #     it 'array when called on an array' do
+  #       expect(array.my_map(&block)).to eql(%w[criscris johnjohn])
+  #     end
+
+  #     it 'array when called on a hash' do
+  #       expect(hash.my_map(&block)).to eql([[:x, 1, :x, 1], [:y, 2, :y, 2]])
+  #     end
+  #   end
+  # end
+
+  describe '#my_inject' do
+    it 'returns a LocalJumpError when no block or parameter received' do
+      expect { array.my_inject }.to raise_error(LocalJumpError)
+    end
+
+    it 'returns a TypeError when the parameter received is a different type then the object elements' do
+      expect { array.my_inject(2) {|c, n| c + n } }.to raise_error(TypeError)
     end
 
     context 'returns a NoMethodError when' do
       it 'is called on a integer' do
-        expect { 5.my_map { |el| el } }.to raise_error(NoMethodError)
+        expect { 5.my_inject { |res, next_el| res / next_el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on a string' do
-        expect { 'XX'.my_map { |el| el } }.to raise_error(NoMethodError)
+        expect { 'XX'.my_inject { |res, next_el| res / next_el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on nil' do
-        expect { nil.my_map { |el| el } }.to raise_error(NoMethodError)
+        expect { nil.my_inject { |res, next_el| res / next_el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on boolean' do
-        expect { true.my_map { |el| el } }.to raise_error(NoMethodError)
+        expect { true.my_inject { |res, next_el| res / next_el } }.to raise_error(NoMethodError)
       end
 
       it 'the block cannot be applied to one of the containing elements' do
-        expect { ['xx', nil, false].my_map { |el| el / 2 } }.to raise_error(NoMethodError)
+        expect { array.my_inject { |res, next_el| res / next_el } }.to raise_error(NoMethodError)
+      end
+
+      it 'receives a symbol parameter and a block' do
+        expect { array.my_inject(:+) { |res, next_el| res + next_el } }.to raise_error(NoMethodError)
+      end
+
+      it '2 parameters received and the second one is not an applicable method symbol' do
+        expect { array.my_inject('xx', 'X') }.to raise_error(NoMethodError)
       end
     end
 
-    context 'returns a new object with the yielded block on each element:' do
-      let(:block) { proc { |element| element * 2 } }
-
-      it 'array when called on an array' do
-        expect(array.my_map(&block)).to eql(%w[criscris johnjohn])
+    context 'when 2 parameters received' do
+      it 'applies the second parameter method to the first parameter with all the object elements' do
+        expect(array.my_inject('x', :+)).to eql('xcrisjohn')
       end
 
-      it 'array when called on a hash' do
-        expect(hash.my_map(&block)).to eql([[:x, 1, :x, 1], [:y, 2, :y, 2]])
+      it 'if block also received it does not use it' do
+        expect(array.my_inject('x', :+) { |c, n| c * n }).to eql('xcrisjohn')
+      end
+    end
+
+    context 'if parameter and block received' do
+      it 'applies the block method to the parameter with all the object elements' do
+        expect(array.my_inject('john') { |c, n| c + n }).to eql('johncrisjohn')
+      end
+    end
+
+    context 'if block received and no parameter' do
+      it 'return the result of the yielded block between all elements' do
+        expect(array.my_inject { |c, n| c + n }).to eql('crisjohn')
+      end
+
+      it 'accepts hashes' do
+          result = hash.my_inject { |c, n| c[1] + n[1] }
+          expect(result).to eql(3)
       end
     end
   end

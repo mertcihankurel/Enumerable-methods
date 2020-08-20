@@ -127,7 +127,7 @@ module Enumerable
 
     result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
 
-    if block_given?
+    if block_given? && !both_args
       array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
 
       array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
@@ -153,7 +153,7 @@ end
 
 # p 5.times.my_inject(20, :*)
 # p 5.times.inject(20, :*)
-result = []
+array = [5, 9, 10]
 hash1 = { x: 1, y: 2 }
 # p [1, 4, 1, nil].my_count(/^[A-Z]+$/i) { |el| el - 2 } 
 # p 2.my_all?
@@ -163,4 +163,5 @@ hash1 = { x: 1, y: 2 }
 
 # p [1, 4, 6].my_all?() { |el| el > 2 }
 # p [1, 4, 6].my_select { |el| el > 2 } 
-p hash1.map { |element| element * 2 }
+# p array.my_inject('xx', 'X')
+# p hash1.inject {|c, n| c[1] + n[1]}
