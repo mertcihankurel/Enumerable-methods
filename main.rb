@@ -149,7 +149,11 @@ def multiply_els(array)
 end
 
 my_proc = proc { |num| num > 6 }
-p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
+# p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
 
-p 5.times.my_inject(20, :*)
-p 5.times.inject(20, :*)
+# p 5.times.my_inject(20, :*)
+# p 5.times.inject(20, :*)
+result = []
+hash1 = { x: 2, y: 4 }
+# ['xx'].my_each { |el| result << el/2}
+p result
