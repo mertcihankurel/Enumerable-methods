@@ -148,12 +148,18 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-my_proc = proc { |num| num > 6 }
+# my_proc = proc { |num| num > 6 }
 # p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
 
 # p 5.times.my_inject(20, :*)
 # p 5.times.inject(20, :*)
 result = []
 hash1 = { x: 2, y: 4 }
-hash1.each_with_index { |e, i| p e, i }
+# p [1, 4, 6].my_select 
+# p 2.my_select
+# p 'xx'.my_select
+# p nil.my_select
 # p result
+
+# p [1, 4, 6].my_select { |el| el > 2 } 
+p hash1.my_select { |key, value| value > 2 } 
