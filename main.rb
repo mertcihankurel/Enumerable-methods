@@ -143,7 +143,7 @@ module Enumerable
 end
 
 def multiply_els(array)
-  raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
+  raise ArgumentError.new('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
 
   array.my_inject(:*)
 end
@@ -155,13 +155,4 @@ end
 # p 5.times.inject(20, :*)
 array = [5, 9, 10]
 hash1 = { x: 1, y: 2 }
-# p [1, 4, 1, nil].my_count(/^[A-Z]+$/i) { |el| el - 2 } 
-# p 2.my_all?
-# p 'xx'.my_all?
-# p nil.my_all?
-# p result
-
-# p [1, 4, 6].my_all?() { |el| el > 2 }
-# p [1, 4, 6].my_select { |el| el > 2 } 
-# p array.my_inject('xx', 'X')
-# p hash1.inject {|c, n| c[1] + n[1]}
+p multiply_els(array)
