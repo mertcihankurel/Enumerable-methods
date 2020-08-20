@@ -164,88 +164,264 @@ describe Enumerable do
   #   end
   # end
 
-  describe '#my_all?' do
+  # describe '#my_all?' do
+  #   context 'returns a NoMethodError when' do
+  #     it 'is called on a integer' do
+  #       expect { 5.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on a string' do
+  #       expect { 'XX'.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on nil' do
+  #       expect { nil.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on boolean' do
+  #       expect { true.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'the block cannot be applied to the containing elements' do
+  #       expect { ['xx', nil, false].my_all? { |el| el / 2 } }.to raise_error(NoMethodError)
+  #     end
+  #   end
+
+  #   context 'if no parameter and block given' do
+  #     it 'returns true if all elements are not `nil` or `false`' do
+  #       expect([1, 4, 6].my_all?).to eql(true)
+  #     end
+
+  #     it 'returns false if one of the elements is `nil` or `false`' do
+  #       expect([1, 4, nil].my_all?).to eql(false)
+  #     end
+  #   end
+
+  #   context 'if parameter is received matches the parameter' do
+  #     it 'if block given also, it only applies the parameter' do
+  #       expect(array.my_all?(String) { |el| el.length < 2 }).to eql(true)
+  #     end
+
+  #     it 'if Regex match' do
+  #       expect(array.my_all?(/^[A-Z]+$/i)).to eql(true)
+  #     end
+
+  #     it 'if Regex not match' do
+  #       expect(array.my_all?(/x/)).to eql(false)
+  #     end
+
+  #     it 'if Class match' do
+  #       expect(array.my_all?(String)).to eql(true)
+  #     end
+
+  #     it 'if Class not match' do
+  #       expect(array.my_all?(Numeric)).to eql(false)
+  #     end
+
+  #     it 'if other type match' do
+  #       expect([2, 2, 2].my_all?(2)).to eql(true)
+  #     end
+
+  #     it 'if other type not match' do
+  #       expect(array.my_all?(2)).to eql(false)
+  #     end
+  #   end
+
+  #   context 'when no paramter received, yields the block on each element and:' do
+  #     it 'return true if all elements pass' do
+  #       result = array.my_all? { |el| el.length == 4 }
+  #       expect(result).to eql(true)
+  #     end
+
+  #     it 'return false if one element doesn`t pass' do
+  #       result = array.my_all? { |el| el.length > 4 }
+  #       expect(result).to eql(false)
+  #     end
+
+  #     context 'accepts hashes as well:' do
+  #       it 'return true if all elements pass' do
+  #         result = hash.my_all? { |_key, value| value > 0 }
+  #         expect(result).to eql(true)
+  #       end
+
+  #       it 'return false if one element doesn`t pass' do
+  #         result = hash.my_all? { |_key, value| value > 2 }
+  #         expect(result).to eql(false)
+  #       end
+  #     end
+  #   end
+  # end
+
+  # describe '#my_all?' do
+  #   context 'returns a NoMethodError when' do
+  #     it 'is called on a integer' do
+  #       expect { 5.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on a string' do
+  #       expect { 'XX'.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on nil' do
+  #       expect { nil.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on boolean' do
+  #       expect { true.my_all? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'the block cannot be applied to the containing elements' do
+  #       expect { ['xx', nil, false].my_all? { |el| el / 2 } }.to raise_error(NoMethodError)
+  #     end
+  #   end
+
+  #   context 'if no parameter and block given' do
+  #     it 'returns true if all elements are not `nil` or `false`' do
+  #       expect([1, 4, 6].my_all?).to eql(true)
+  #     end
+
+  #     it 'returns false if one of the elements is `nil` or `false`' do
+  #       expect([1, 4, nil].my_all?).to eql(false)
+  #     end
+  #   end
+
+  #   context 'if parameter is received matches the parameter' do
+  #     it 'if block given also, it only applies the parameter' do
+  #       expect(array.my_all?(String) { |el| el.length < 2 }).to eql(true)
+  #     end
+
+  #     it 'if Regex match' do
+  #       expect(array.my_all?(/^[A-Z]+$/i)).to eql(true)
+  #     end
+
+  #     it 'if Regex not match' do
+  #       expect(array.my_all?(/x/)).to eql(false)
+  #     end
+
+  #     it 'if Class match' do
+  #       expect(array.my_all?(String)).to eql(true)
+  #     end
+
+  #     it 'if Class not match' do
+  #       expect(array.my_all?(Numeric)).to eql(false)
+  #     end
+
+  #     it 'if other type match' do
+  #       expect([2, 2, 2].my_all?(2)).to eql(true)
+  #     end
+
+  #     it 'if other type not match' do
+  #       expect(array.my_all?(2)).to eql(false)
+  #     end
+  #   end
+
+  #   context 'when no paramter received, yields the block on each element and:' do
+  #     it 'return true if all elements pass' do
+  #       result = array.my_all? { |el| el.length == 4 }
+  #       expect(result).to eql(true)
+  #     end
+
+  #     it 'return false if one element doesn`t pass' do
+  #       result = array.my_all? { |el| el.length > 4 }
+  #       expect(result).to eql(false)
+  #     end
+
+  #     context 'accepts hashes as well:' do
+  #       it 'return true if all elements pass' do
+  #         result = hash.my_all? { |_key, value| value > 0 }
+  #         expect(result).to eql(true)
+  #       end
+
+  #       it 'return false if one element doesn`t pass' do
+  #         result = hash.my_all? { |_key, value| value > 2 }
+  #         expect(result).to eql(false)
+  #       end
+  #     end
+  #   end
+  # end
+
+  describe '#my_any?' do
     context 'returns a NoMethodError when' do
       it 'is called on a integer' do
-        expect { 5.my_all? { |el| el } }.to raise_error(NoMethodError)
+        expect { 5.my_any? { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on a string' do
-        expect { 'XX'.my_all? { |el| el } }.to raise_error(NoMethodError)
+        expect { 'XX'.my_any? { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on nil' do
-        expect { nil.my_all? { |el| el } }.to raise_error(NoMethodError)
+        expect { nil.my_any? { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on boolean' do
-        expect { true.my_all? { |el| el } }.to raise_error(NoMethodError)
+        expect { true.my_any? { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'the block cannot be applied to the containing elements' do
-        expect { ['xx', nil, false].my_all? { |el| el / 2 } }.to raise_error(NoMethodError)
+        expect { ['xx', nil, false].my_any? { |el| el / 2 } }.to raise_error(NoMethodError)
       end
     end
 
     context 'if no parameter and block given' do
-      it 'returns true if all elements are not `nil` or `false`' do
-        expect([1, 4, 6].my_all?).to eql(true)
+      it 'returns true if any of the elements is not `nil` or `false`' do
+        expect([1, 4, nil].my_any?).to eql(true)
       end
 
-      it 'returns false if one of the elements is `nil` or `false`' do
-        expect([1, 4, nil].my_all?).to eql(false)
+      it 'returns false all the elements are `false` or `nil`' do
+        expect([false, false, nil].my_any?).to eql(false)
       end
     end
 
     context 'if parameter is received matches the parameter' do
       it 'if block given also, it only applies the parameter' do
-        expect(array.my_all?(String) { |el| el.length < 2 }).to eql(true)
+        expect(array.my_any?(String) { |el| el.length < 2 }).to eql(true)
       end
 
-      it 'if Regex match' do
-        expect(array.my_all?(/^[A-Z]+$/i)).to eql(true)
+      it 'if Regex match one element' do
+        expect(['x', 2].my_any?(/^[A-Z]+$/i)).to eql(true)
       end
 
-      it 'if Regex not match' do
-        expect(array.my_all?(/x/)).to eql(false)
+      it 'if Regex not match any element' do
+        expect([1, 2].my_any?(/x/)).to eql(false)
       end
 
-      it 'if Class match' do
-        expect(array.my_all?(String)).to eql(true)
+      it 'if Class match one element' do
+        expect(['x', 2].my_any?(String)).to eql(true)
       end
 
-      it 'if Class not match' do
-        expect(array.my_all?(Numeric)).to eql(false)
+      it 'if Class not match any element' do
+        expect([1, 2].my_any?(String)).to eql(false)
       end
 
       it 'if other type match' do
-        expect([2, 2, 2].my_all?(2)).to eql(true)
+        expect([2, 2, 2].my_any?(2)).to eql(true)
       end
 
       it 'if other type not match' do
-        expect(array.my_all?(2)).to eql(false)
+        expect(array.my_any?(2)).to eql(false)
       end
     end
 
     context 'when no paramter received, yields the block on each element and:' do
-      it 'return true if all elements pass' do
-        result = array.my_all? { |el| el.length == 4 }
+      it 'return true if any element pass' do
+        result = %w[x xxxx].my_any? { |el| el.length == 4 }
         expect(result).to eql(true)
       end
 
-      it 'return false if one element doesn`t pass' do
-        result = array.my_all? { |el| el.length > 4 }
+      it 'return false if no element pass' do
+        result = array.my_any? { |el| el.length > 4 }
         expect(result).to eql(false)
       end
 
       context 'accepts hashes as well:' do
-        it 'return true if all elements pass' do
-          result = hash.my_all? { |_key, value| value > 0 }
+        it 'return true if any elements pass' do
+          result = hash.my_any? { |_key, value| value > 1 }
           expect(result).to eql(true)
         end
 
-        it 'return false if one element doesn`t pass' do
-          result = hash.my_all? { |_key, value| value > 2 }
+        it 'return false if no element pass' do
+          result = hash.my_any? { |_key, value| value > 2 }
           expect(result).to eql(false)
         end
       end

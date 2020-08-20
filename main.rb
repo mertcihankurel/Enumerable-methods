@@ -155,7 +155,7 @@ end
 # p 5.times.inject(20, :*)
 result = []
 hash1 = { x: 2, y: 4 }
-# p [1, 4, 6].my_all? 
+p [1, 4, nil].my_any? 
 # p 2.my_all?
 # p 'xx'.my_all?
 # p nil.my_all?
@@ -163,4 +163,4 @@ hash1 = { x: 2, y: 4 }
 
 # p [1, 4, 6].my_all?() { |el| el > 2 }
 # p [1, 4, 6].my_select { |el| el > 2 } 
-p hash1.my_all? { |key, value| value > 1 } 
+# p hash1.my_all? { |key, value| value > 1 } 
