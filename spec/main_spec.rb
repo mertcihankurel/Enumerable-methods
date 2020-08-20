@@ -428,89 +428,161 @@ describe Enumerable do
   #   end
   # end
 
-  describe '#my_none?' do
+  # describe '#my_none?' do
+  #   context 'returns a NoMethodError when' do
+  #     it 'is called on a integer' do
+  #       expect { 5.my_none? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on a string' do
+  #       expect { 'XX'.my_none? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on nil' do
+  #       expect { nil.my_none? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'is called on boolean' do
+  #       expect { true.my_none? { |el| el } }.to raise_error(NoMethodError)
+  #     end
+
+  #     it 'the block cannot be applied to the containing elements' do
+  #       expect { ['xx', nil, false].my_none? { |el| el / 2 } }.to raise_error(NoMethodError)
+  #     end
+  #   end
+
+  #   context 'if no parameter and block given' do
+  #     it 'returns true if none of the elements are `nil` or `false`' do
+  #       expect([false, nil, nil].my_none?).to eql(true)
+  #     end
+
+  #     it 'returns false if one of the elements is not `false` or `nil`' do
+  #       expect([1, false, nil].my_none?).to eql(false)
+  #     end
+  #   end
+
+  #   context 'if parameter is received matches the parameter' do
+  #     it 'if block given, it only applies the parameter' do
+  #       expect(array.my_none?(Numeric) { |el| el.length < 2 }).to eql(true)
+  #     end
+
+  #     it 'if Regex match one element return false' do
+  #       expect(['x', 2].my_none?(/^[A-Z]+$/i)).to eql(false)
+  #     end
+
+  #     it 'if Regex not match any element return true' do
+  #       expect([1, 2].my_none?(/x/)).to eql(true)
+  #     end
+
+  #     it 'if Class match one element return false' do
+  #       expect(['x', 2].my_none?(String)).to eql(false)
+  #     end
+
+  #     it 'if Class not match any element' do
+  #       expect([1, 2].my_none?(String)).to eql(true)
+  #     end
+
+  #     it 'if other type match return false' do
+  #       expect([2, 2, 2].my_none?(2)).to eql(false)
+  #     end
+
+  #     it 'if other type not match' do
+  #       expect(array.my_none?(2)).to eql(true)
+  #     end
+  #   end
+
+  #   context 'when no paramter received, yields the block on each element and:' do
+  #     it 'return false if any element pass' do
+  #       result = %w[x xxxx].my_none? { |el| el.length == 4 }
+  #       expect(result).to eql(false)
+  #     end
+
+  #     it 'return true if no element pass' do
+  #       result = array.my_none? { |el| el.length > 4 }
+  #       expect(result).to eql(true)
+  #     end
+
+  #     context 'accepts hashes as well:' do
+  #       it 'return false if any elements pass' do
+  #         result = hash.my_none? { |_key, value| value > 1 }
+  #         expect(result).to eql(false)
+  #       end
+
+  #       it 'return true if no element pass' do
+  #         result = hash.my_none? { |_key, value| value > 2 }
+  #         expect(result).to eql(true)
+  #       end
+  #     end
+  #   end
+  # end
+
+  describe '#my_count' do
     context 'returns a NoMethodError when' do
       it 'is called on a integer' do
-        expect { 5.my_none? { |el| el } }.to raise_error(NoMethodError)
+        expect { 5.my_count { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on a string' do
-        expect { 'XX'.my_none? { |el| el } }.to raise_error(NoMethodError)
+        expect { 'XX'.my_count { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on nil' do
-        expect { nil.my_none? { |el| el } }.to raise_error(NoMethodError)
+        expect { nil.my_count { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'is called on boolean' do
-        expect { true.my_none? { |el| el } }.to raise_error(NoMethodError)
+        expect { true.my_count { |el| el } }.to raise_error(NoMethodError)
       end
 
       it 'the block cannot be applied to the containing elements' do
-        expect { ['xx', nil, false].my_none? { |el| el / 2 } }.to raise_error(NoMethodError)
+        expect { ['xx', nil, false].my_count { |el| el / 2 } }.to raise_error(NoMethodError)
       end
     end
 
     context 'if no parameter and block given' do
-      it 'returns true if none of the elements are `nil` or `false`' do
-        expect([false, nil, nil].my_none?).to eql(true)
+      it 'return the count of elements inside the object' do
+        expect(array.my_count).to eql(2)
       end
 
-      it 'returns false if one of the elements is not `false` or `nil`' do
-        expect([1, false, nil].my_none?).to eql(false)
+      it 'also counts the `nil` and `false` values' do
+        expect([1, false, nil].my_count).to eql(3)
       end
     end
 
     context 'if parameter is received matches the parameter' do
       it 'if block given, it only applies the parameter' do
-        expect(array.my_none?(Numeric) { |el| el.length < 2 }).to eql(true)
+        expect(array.my_count('john') { |el| el.length < 2 }).to eql(1)
       end
 
-      it 'if Regex match one element return false' do
-        expect(['x', 2].my_none?(/^[A-Z]+$/i)).to eql(false)
+      it 'counts the elements that equal to the parameter' do
+        expect(array.my_count('cris')).to eql(1)
       end
 
-      it 'if Regex not match any element return true' do
-        expect([1, 2].my_none?(/x/)).to eql(true)
-      end
-
-      it 'if Class match one element return false' do
-        expect(['x', 2].my_none?(String)).to eql(false)
-      end
-
-      it 'if Class not match any element' do
-        expect([1, 2].my_none?(String)).to eql(true)
-      end
-
-      it 'if other type match return false' do
-        expect([2, 2, 2].my_none?(2)).to eql(false)
-      end
-
-      it 'if other type not match' do
-        expect(array.my_none?(2)).to eql(true)
+      it 'return 0 if no element equals to the parameter' do
+        expect(array.my_count(String)).to eql(0)
       end
     end
 
     context 'when no paramter received, yields the block on each element and:' do
-      it 'return false if any element pass' do
-        result = %w[x xxxx].my_none? { |el| el.length == 4 }
-        expect(result).to eql(false)
+      it 'counts the elements that pass' do
+        result = array.my_count { |el| el.length == 4 }
+        expect(result).to eql(2)
       end
 
-      it 'return true if no element pass' do
-        result = array.my_none? { |el| el.length > 4 }
-        expect(result).to eql(true)
+      it 'return 0 if no element pass' do
+        result = array.my_count { |el| el.length > 4 }
+        expect(result).to eql(0)
       end
 
       context 'accepts hashes as well:' do
-        it 'return false if any elements pass' do
-          result = hash.my_none? { |_key, value| value > 1 }
-          expect(result).to eql(false)
+        it 'counts the elements that pass' do
+          result = hash.my_count { |_key, value| value > 1 }
+          expect(result).to eql(1)
         end
 
-        it 'return true if no element pass' do
-          result = hash.my_none? { |_key, value| value > 2 }
-          expect(result).to eql(true)
+        it 'return 0 if no element pass' do
+          result = hash.my_count { |_key, value| value > 2 }
+          expect(result).to eql(0)
         end
       end
     end
