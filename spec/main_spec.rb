@@ -634,7 +634,7 @@ describe Enumerable do
     end
 
     it 'returns a TypeError when the parameter received is a different type then the object elements' do
-      expect { array.my_inject(2) {|c, n| c + n } }.to raise_error(TypeError)
+      expect { array.my_inject(2) { |c, n| c + n } }.to raise_error(TypeError)
     end
 
     context 'returns a NoMethodError when' do
@@ -690,7 +690,7 @@ describe Enumerable do
 
       it 'accepts hashes' do
         result = hash.my_inject { |c, n| c[1] + n[1] }
-          expect(result).to eql(3)
+        expect(result).to eql(3)
       end
     end
   end
