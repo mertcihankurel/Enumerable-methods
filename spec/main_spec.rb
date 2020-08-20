@@ -58,4 +58,57 @@ describe Enumerable do
     end
   end
 
+  describe '#my_each_with_index' do
+    it 'returns an Enumerator if no block given' do
+      expect([1, 4, 6].my_each_with_index.class).to be Enumerator
+    end
+
+    context 'returns a NoMethodError when' do
+      it 'is called on a integer' do
+        expect { 5.my_each_with_index { |el| el } }.to raise_error(NoMethodError)
+      end
+
+      it 'is called on a string' do
+        expect { 'XX'.my_each_with_index { |el| el } }.to raise_error(NoMethodError)
+      end
+
+      it 'is called on nil' do
+        expect { nil.my_each_with_index { |el| el } }.to raise_error(NoMethodError)
+      end
+
+      it 'is called on boolean' do
+        expect { true.my_each_with_index { |el| el } }.to raise_error(NoMethodError)
+      end
+
+      it 'the block cannot be applied to the containing elements' do
+        expect { ['xx', nil, false].my_each_with_index { |el| el / 2 } }.to raise_error(NoMethodError)
+      end
+    end
+
+    context 'returns the element that is called on:' do
+      let(:block) { proc { |element| element } }
+
+      it 'array when called on an array' do
+        expect(array.my_each_with_index(&block)).to eql(array)
+      end
+
+      it 'hash when called on an hash' do
+        expect(hash.my_each_with_index(&block)).to eql(hash)
+      end
+    end
+
+    context 'yields the block on each element and its index of the object is called on:' do
+      it 'when array received' do
+        result = []
+        array.my_each_with_index { |el, index| result.push([index, el]) }
+        expect(result).to eql([[0, 'cris'], [1, 'john']])
+      end
+
+      it 'when hash received' do
+        result = []
+        hash.my_each_with_index { |el, index| result.push([index, el]) }
+        expect(result).to eql([[0, [:x, 1]], [1, [:y, 2]]])
+      end
+    end
+  end
 end

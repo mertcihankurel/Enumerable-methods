@@ -155,5 +155,5 @@ my_proc = proc { |num| num > 6 }
 # p 5.times.inject(20, :*)
 result = []
 hash1 = { x: 2, y: 4 }
-# ['xx'].my_each { |el| result << el/2}
-p result
+hash1.each_with_index { |e, i| p e, i }
+# p result
