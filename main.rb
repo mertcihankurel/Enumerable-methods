@@ -127,7 +127,7 @@ module Enumerable
 
     result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
 
-    if block_given?
+    if block_given? && !both_args
       array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
 
       array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
@@ -143,13 +143,14 @@ module Enumerable
 end
 
 def multiply_els(array)
-  raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
+  raise ArgumentError.new('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric) # rubocop: disable Style/RaiseArgs
 
   array.my_inject(:*)
 end
 
+array = [5, 9, 10]
 my_proc = proc { |num| num > 6 }
 p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
-
 p 5.times.my_inject(20, :*)
 p 5.times.inject(20, :*)
+p multiply_els(array)
