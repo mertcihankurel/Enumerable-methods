@@ -32,19 +32,31 @@ To get this project up and running, you must already have ruby installed on your
 
 3. Copy and paste the following code into the Terminal:
 
-    git clone https://github.com/mcihadkurel/Enumerable-methods
+    `git clone https://github.com/mcihadkurel/Enumerable-methods`
 
 4. Hit enter.
 
 5. Once the repository has been cloned, navigate inside the repository and type:
 
-    ruby main.rb
+    `ruby main.rb`
     
     This will run the code, printing the output of our tests to the terminal. 
 
 6. To change those tests, simply open main.rb in a code editor and modify the values stored in the test_array and test_run variables.
 
-6. Enjoy sorted arrays of data for the rest of your life.
+7. Enjoy sorted arrays of data for the rest of your life.
+
+### Tests
+
+1. Open Terminal
+
+2. Install RSpec on your system by running:
+
+    `gem install rspec`
+
+3. Run the tests with with the command:
+
+    `rspec`
 
 ## Authors
 
