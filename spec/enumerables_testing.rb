@@ -3,8 +3,6 @@ require '../main.rb'
 describe Enumerable do
   let(:test) { Enumerables.new }
   let(:my_array) { [1, 3, 5, 7] }
-  let(:my_string_array) { %w[Marc Luc Jean] }
-  let(:my_numric_array) { [1, 5i, 5.67] }
 
   describe '#my_each' do
     result = []
@@ -107,9 +105,13 @@ describe Enumerable do
       expect(my_array.my_inject(&proc)).to eql(105)
     end
   end
+end
+describe Multibly_els do
+  let(:mlt) { Multibly_els.new }
+  let(:my_array) { [1, 3, 5, 7] }
   describe '#multiply_els' do
     it 'returns the elements of the given array multiplied' do
-      expect(multiply_els(my_array)).to eql(105)
+      expect(mlt.multiply_els(my_array)).to eql(105)
     end
   end
 end

@@ -240,7 +240,7 @@ describe Enumerable do
 
       context 'accepts hashes as well:' do
         it 'return true if all elements pass' do
-          result = hash.my_all? { |_key, value| value > 0 }
+          result = hash.my_all? { |_key, value| value.positive? }
           expect(result).to eql(true)
         end
 
