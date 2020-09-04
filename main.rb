@@ -164,13 +164,12 @@ module Enumerable
     result
   end
 end
-class Multibly_els 
-  def initialize
-  end
+class Multibly
+  def initialize; end
+
   def multiply_els(array)
     raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
 
     array.my_inject(:*)
   end
 end
-

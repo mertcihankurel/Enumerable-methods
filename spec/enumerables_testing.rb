@@ -106,8 +106,8 @@ describe Enumerable do
     end
   end
 end
-describe Multibly_els do
-  let(:mlt) { Multibly_els.new }
+describe Multibly do
+  let(:mlt) { Multibly.new }
   let(:my_array) { [1, 3, 5, 7] }
   describe '#multiply_els' do
     it 'returns the elements of the given array multiplied' do
