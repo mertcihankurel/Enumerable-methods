@@ -114,6 +114,7 @@ module Enumerable
     end
     n
   end
+
   def my_map(arg = nil)
     if arg.nil?
       return to_enum unless block_given?
