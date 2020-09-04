@@ -3,7 +3,7 @@ module Enumerable
   def my_each(_arr = nil)
     return to_enum unless block_given?
 
-    Array(self).length.times do| i|
+    Array(self).length.times do |i|
       yield(Array(self)[i])
     end
     self
@@ -163,6 +163,12 @@ module Enumerable
       end
     end
     result
+  end
+
+  def multiply_els(array)
+    raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
+
+    array.my_inject(:*)
   end
 end
 

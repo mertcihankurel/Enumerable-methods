@@ -107,4 +107,9 @@ describe Enumerable do
       expect(my_array.my_inject(&proc)).to eql(105)
     end
   end
+  describe '#multiply_els' do
+    it 'returns the elements of the given array multiplied' do
+      expect(multiply_els(my_array)).to eql(105)
+    end
+  end
 end
