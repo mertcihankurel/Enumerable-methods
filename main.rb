@@ -114,7 +114,6 @@ module Enumerable
     end
     n
   end
-
   def my_map(arg = nil)
     if arg.nil?
       return to_enum unless block_given?
@@ -136,7 +135,6 @@ module Enumerable
          output = []
          my_each { |item| output.push(item) if item == arg || item.match?(arg) }
          output
-
     end
     output
   end
@@ -173,19 +171,14 @@ module Enumerable
 end
 
 def multiply_els(array)
-  raise ArgumentError('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric)
+  raise ArgumentError.new('Only arrays with Numeric elements accepted') unless array.my_all?(Numeric) # rubocop: disable Style/RaiseArgs
 
   array.my_inject(:*)
 end
 
-p(%w[Marc Luc Jean].my_all? { |text| text.size >= 3 }) # => true
-p(%w[Marc Luc Jean].my_all? { |text| text.size >= 4 }) # => false
-p [2, 1, 6, 7, 4, 8, 10].my_all?(3) # => false
-p %w[Marc Luc Jean].my_all?('Jean') # => false
-p %w[Marc Luc Jean].my_all?(/a/) # => false
-p [1, 5i, 5.67].my_all?(Numeric) # => true
-p [2, 1, 6, 7, 4, 8, 10].my_all?(Integer) # => true
-p [nil, true, 99].my_all? # => false
-p [nil, false].my_all? # => false
-p [nil, nil, nil].my_all? # => false
-p [].my_all? # => true
+array = [5, 9, 10]
+my_proc = proc { |num| num > 6 }
+p [2, 54, 6, 7].my_map(my_proc) { |num| num < 10 }
+p 5.times.my_inject(20, :*)
+p 5.times.inject(20, :*)
+p multiply_els(array)
