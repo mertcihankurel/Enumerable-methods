@@ -8,9 +8,11 @@ AllCops:
 Layout/LineLength:
   Max: 120
 Metrics/MethodLength:
-  Max: 20
+  Max: 30
 Metrics/AbcSize:
   Max: 50
+Metrics/ModuleLength:
+  Max: 200
 Metrics/ClassLength:
   Max: 150
 Metrics/BlockLength:
@@ -19,6 +21,10 @@ Metrics/BlockLength:
 
 
 Style/Documentation:
+  Enabled: false
+Style/SymbolProc:
+  Enabled: false
+Lint/UselessAssignment:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
